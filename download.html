@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieVault | Downloads</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="side-bar">
+        <div class="logo-section">
+            <button id="menu-btn" class="material-symbols-rounded">menu</button>
+            <div class="logo">Movie<span class="accent">Vault</span></div>
+        </div>
+        <ul class="side-bar-links">
+            <li><a href="/html/index.html"><span class="material-symbols-rounded">home</span><span class="link-text">Home</span></a></li>
+            <li><a href="/html/library.html"><span class="material-symbols-rounded">grid_view</span><span class="link-text">Library</span></a></li>
+            <li><a href="/html/download.html" class="active"><span class="material-symbols-rounded">download</span><span class="link-text">Download</span></a></li>
+            <li class="desktop-only"><a href="/html/mylist.html"><span class="material-symbols-rounded">bookmark</span><span class="link-text">My List</span></a></li>
+            <li class="desktop-only"><a href="/html/history.html"><span class="material-symbols-rounded">schedule</span><span class="link-text">History</span></a></li>
+            <li class="me-link"><a href="/html/account.html"><span class="material-symbols-rounded">account_circle</span><span class="link-text">Me</span></a></li>
+        </ul>
+        <ul class="down-side-links">
+            <li><a href="#"><span class="material-symbols-rounded">mail</span><span class="link-text">Inbox</span></a></li>
+            <li><a href="/html/account.html"><span class="material-symbols-rounded">account_circle</span><span class="link-text">Me</span></a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="main-content">
+        <div id="download-page" class="dl-page">
+            <div class="dl-page-header">
+                <h2>My Downloads</h2>
+                <div class="dl-actions">
+                    <button onclick="Downloads.clearCompletedDownloads()" class="clear-btn">
+                        <span class="material-symbols-rounded">delete_sweep</span> Clear Completed
+                    </button>
+                </div>
+            </div>
+
+            <div class="storage-bar">
+                <span><span class="dot purple"></span> Internal storage 53.70GB</span>
+                <span class="green-text"><span class="dot green"></span>  remaining</span>
+            </div>
+
+            <div id="download-list" class="download-list">
+                <div class="empty-state">
+                    <span class="material-symbols-rounded" style="font-size: 48px; color: #666;">download</span>
+                    <p>No active or completed downloads.</p>
+                    <p style="font-size: 14px; color: #666;">Start downloading from the player modal.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script type="module">
+        import { Downloads } from '/js/downloads.js';
+        
+        // Make Downloads globally available
+        window.Downloads = Downloads;
+        
+        // Render download list on load
+        document.addEventListener('DOMContentLoaded', () => {
+            Downloads.renderDownloadList();
+            Downloads.syncStorage();
+        });
+        
+        // Listen for storage changes
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'my_downloads') {
+                Downloads.renderDownloadList();
+                Downloads.updateDownloadCount();
+            }
+        });
+        
+        // Custom event for download updates
+        window.addEventListener('downloadsUpdated', () => {
+            Downloads.renderDownloadList();
+            Downloads.updateDownloadCount();
+        });
+    </script>
+</body>
+</html>

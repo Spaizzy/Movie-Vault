@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MovieVault | Library</title>
+    
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+
+    <style>
+        :root {
+            --plyr-color-main: #977dff; 
+            --plyr-video-control-background-hover: rgba(229, 9, 20, 0.1);
+        }
+        
+        .video-wrapper {
+            max-width: 900px;
+            margin: 20px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            background: #000;
+        }
+
+        .loader {
+            padding: 50px;
+            text-align: center;
+            color: #977dff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="side-bar">
+        <div class="logo-section">
+            <button id="menu-btn" class="material-symbols-rounded">menu</button>
+            <div class="logo">Movie<span class="accent">Vault</span></div>
+        </div>
+        <ul class="side-bar-links">
+            <li><a href="/html/index.html"><span class="material-symbols-rounded">home</span><span class="link-text">Home</span></a></li>
+            <li><a href="/html/library.html" class="active"><span class="material-symbols-rounded">grid_view</span><span class="link-text">Library</span></a></li>
+            <li><a href="/html/download.html"><span class="material-symbols-rounded">download</span><span class="link-text">Download</span></a></li>
+            <li class="desktop-only"><a href="/html/mylist.html"><span class="material-symbols-rounded">bookmark</span><span class="link-text">My List</span></a></li>
+            <li class="desktop-only"><a href="/html/history.html" class="sidebar-item"><span class="material-symbols-rounded">schedule</span><span class="link-text">History</span></a></li>
+            <li class="me-link"><a href="/html/account.html"><span class="material-symbols-rounded">account_circle</span><span class="link-text">Me</span></a></li>
+        </ul>
+
+        <ul class="down-side-links">
+            <li><a href="#"><span class="material-symbols-rounded">mail</span><span class="link-text">Inbox</span></a></li>
+            <li><a href="/html/account.html"><span class="material-symbols-rounded">account_circle</span><span class="link-text">Me</span></a></li>
+        </ul>
+    </div>
+
+    <nav class="lib-top-bar">
+        <ul class="top-links">
+            <li class="active" data-type="tv"><a href="#">TV Series</a></li>
+            <li data-type="tv" data-genre="18" data-short="true"><a href="#">Shorts</a></li>
+            <li data-type="movie"><a href="#">Movie</a></li>
+            <li data-type="tv" data-genre="16"><a href="#">Anime</a></li>
+            <li data-type="tv" data-genre="10764"><a href="#">Variety Show</a></li>
+            <li data-type="tv" data-genre="10767"><a href="#">Talk Show</a></li>
+            <li data-type="movie" data-genre="99"><a href="#">Documentary</a></li>
+        </ul>
+
+        <div class="search-box">
+            <div class="search-wrapper">
+                <button class="search-icon"><span class="material-symbols-rounded search">search</span></button>
+                <input type="text" id="global-search" placeholder="Search movies, TV shows...">
+                <button id="clear-search" class="clear-btn"><span class="material-symbols-rounded">close</span></button>
+                <div id="search-history" class="search-history-dropdown"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main id="content-area">
+        <section id="library">
+            <div class="lib-option">
+                <ul class="region-links">
+                    <li class="active"><a href="#">All regions</a></li>
+                    <li><a href="#">USA</a></li>
+                    <li><a href="#">UK</a></li>
+                    <li><a href="#">China</a></li>
+                    <li><a href="#">Japan</a></li>
+                    <li><a href="#">France</a></li>
+                    <li><a href="#">Korea</a></li>
+                </ul>
+                <ul class="cate-links">
+                    <li class="active"><a href="#">All Categories</a></li>
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Adventure</a></li>
+                    <li><a href="#">Comedy</a></li>
+                    <li><a href="#">Drama</a></li>
+                    <li><a href="#">Fantasy</a></li>
+                    <li><a href="#">Horror</a></li>
+                    <li><a href="#">Mystery</a></li>
+                    <li><a href="#">Romance</a></li>
+                    <li><a href="#">Sci-Fi</a></li>
+                    <li><a href="#">Thriller</a></li>
+                </ul>
+                <ul class="time-links">
+                    <li class="active"><a href="#">All Time</a></li>
+                    <li><a href="#">2026</a></li>
+                    <li><a href="#">2025</a></li>
+                    <li><a href="#">2024</a></li>
+                    <li><a href="#">2023</a></li>
+                    <li><a href="#">2022</a></li>
+                    <li><a href="#">2021</a></li>
+                    <li><a href="#">2020</a></li>
+                    <li><a href="#">2019</a></li>
+                    <li><a href="#">Before</a></li>
+                </ul>
+                <ul class="sort-links">
+                    <li class="active" onclick="window.changeSort(this, 'popularity.desc')"><a href="#">Popularity</a></li>
+                    <li onclick="window.changeSort(this, 'primary_release_date.desc')"><a href="#">Recent</a></li>
+                    <li onclick="window.changeSort(this, 'vote_average.desc')"><a href="#">High Rating</a></li>
+                </ul>
+            </div>
+
+            <div id="sticky-filter-trigger" class="sticky-text-bar">
+                <div class="active-filter-text"></div>
+            </div>
+
+            <div class="lib-movie-grid"></div>
+        </section>
+    </main>
+
+    <div id="movie-modal" class="modal-overlay">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close-modal"><span class="material-symbols-rounded">close</span></button>
+            
+            <!-- SINGLE VIDEO CONTAINER -->
+            <div id="video-container" class="video-container">
+                <img id="modal-backdrop" src="" alt="">
+                
+                <!-- Loading State -->
+                <div id="video-loading" class="video-loading" style="display: none;">
+                    <div class="loader"></div>
+                    <p style="color: white; text-align: center; margin-top: 10px;">Fetching your stream...</p>
+                </div>
+                
+                <div class="backdrop-overlay"></div>
+            </div>
+
+            <!-- SINGLE SOURCE BAR -->
+            <div class="source-bar">
+                <div class="server-label">
+                    <span class="material-symbols-rounded">verified</span> 
+                    <span>MovieVault Premium Server</span>
+                </div>
+                <button class="dl-btn-main" onclick="window.Player.openDownload()">
+                    <span class="material-symbols-rounded">download</span> Download
+                </button>
+            </div>
+        </div>
+
+        <div class="modal-body">
+            <div class="info-section">
+                <h2 id="modal-title"></h2>
+                
+                <div class="modal-meta">
+                    <span id="modal-year" class="meta-item"></span>
+                    <span class="divider">•</span>
+                    <div id="modal-genres" class="genre-container"></div> 
+                    <span class="divider">•</span>
+                    <div class="modal-rating">
+                        <span class="material-symbols-rounded">star</span> 
+                        <span id="modal-vote"></span>
+                    </div>
+                </div>
+
+                <div class="modal-actions"></div>
+
+                <p id="modal-desc" class="overview"></p>
+
+                <div id="tv-controls" class="tv-controls-ui" style="display: none;">
+                    <div class="selector-group">
+                        <div class="select-box">
+                            <label>Season</label>
+                            <select id="season-select" class="custom-select"></select>
+                        </div>
+                        <div class="select-box">
+                            <label>Episode</label>
+                            <select id="episode-select" class="custom-select"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <div class="detail-section">
+                <h3 class="section-title">Top Cast</h3>
+                <div id="cast-grid" class="cast-grid"></div>
+            </div>
+
+            <div class="detail-section">
+                <h3 class="section-title">More Like This</h3>
+                <div id="recommendations-grid" class="rec-grid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="download-overlay" class="download-overlay" style="display:none;">
+        <div class="dl-card">
+            <div class="dl-header">
+                <span id="dl-modal-title">Clarity</span>
+                <button onclick="window.Player.closeDownload()"><span class="material-symbols-rounded">close</span></button>
+            </div>
+
+            <div id="quality-selection" class="dl-grid">
+                <button class="dl-opt" onclick="window.Player.startDownload('1080p')">1080P+ <span class="badge">VIP</span></button>
+                <button class="dl-opt" onclick="window.Player.startDownload('720p')">720P</button>
+                <button class="dl-opt" onclick="window.Player.startDownload('540p')">540P</button>
+                <button class="dl-opt" onclick="window.Player.startDownload('360p')">360P</button>
+            </div>
+
+            <div id="episode-download-grid" class="ep-dl-grid" style="display:none;"></div>
+
+            <div class="dl-footer">
+                <span id="storage-info">5.04GB remaining</span>
+                <button class="view-dl-btn" onclick="window.showDownloadPage()">My Downloads <span id="dl-count">0</span></button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/js/config.js"></script>
+    <script type="module" src="/js/state.js"></script>
+    <script type="module" src="/js/utils.js"></script>
+    <script type="module" src="/js/api.js"></script>
+    <script type="module" src="/js/home.js"></script>
+    <script type="module" src="/js/library.js"></script>
+    <script type="module" src="/js/player.js"></script>
+    <script type="module" src="/js/modal.js"></script>
+    <script type="module" src="/js/downloads.js"></script>
+    <script type="module" src="/js/history.js"></script>
+    <script type="module" src="/js/mylist.js"></script>
+    <script type="module" src="/js/search.js"></script>
+    <script type="module" src="/js/main.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/streamsaver@2.0.4/streamsaver.min.js"></script>
+</body>
+</html>
